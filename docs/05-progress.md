@@ -1,6 +1,6 @@
 # Progress Tracker
 
-## Current State (as of 2026-05-20)
+## Current State (as of 2026-05-20) — Deployed on Vercel
 
 ### Done
 - [x] Next.js 14 project created (`hostel-erp/`)
