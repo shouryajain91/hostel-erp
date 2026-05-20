@@ -1,6 +1,6 @@
-# Hostel ERP
+# Indu Niwas — Hostel Management ERP
 
-A cloud-hosted, mobile-responsive Hostel Management ERP built on **Next.js 14**, **Supabase**, and **Vercel** — entirely on free-tier services.
+A cloud-hosted, mobile-responsive Hostel Management ERP for **Indu Niwas**, built on **Next.js 14**, **Supabase**, and **Vercel** — entirely on free-tier services.
 
 **Live:** https://hostel-erp-ruby.vercel.app
 

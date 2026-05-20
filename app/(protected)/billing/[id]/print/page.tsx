@@ -71,7 +71,7 @@ export default async function BillPrintPage({ params }: { params: { id: string }
           <div className="bg-slate-900 text-white px-8 py-6">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-2xl font-bold">HOSTEL ERP</h1>
+                <h1 className="text-2xl font-bold">INDU NIWAS</h1>
                 <p className="text-slate-300 text-sm mt-1">Payment Receipt / Bill</p>
               </div>
               <div className="text-right">
@@ -164,7 +164,7 @@ export default async function BillPrintPage({ params }: { params: { id: string }
 
           {/* Footer */}
           <div className="px-8 py-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 text-center">
-            Generated on {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })} · This is a computer-generated bill
+            Indu Niwas · Generated on {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })} · This is a computer-generated bill
           </div>
         </div>
       </div>

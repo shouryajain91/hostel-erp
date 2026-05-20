@@ -74,7 +74,10 @@ export default function Sidebar({ role, userName }: SidebarProps) {
     <>
       {/* Mobile top header */}
       <header className="lg:hidden fixed top-0 inset-x-0 z-30 h-14 bg-slate-900 flex items-center justify-between px-4 shadow-md">
-        <span className="text-white font-bold text-base">Hostel ERP</span>
+        <div>
+          <span className="text-white font-bold text-base">Indu Niwas</span>
+          <span className="text-slate-400 text-xs ml-2">Hostel</span>
+        </div>
         <button
           onClick={() => setOpen(true)}
           className="text-slate-300 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
@@ -103,7 +106,7 @@ export default function Sidebar({ role, userName }: SidebarProps) {
       >
         <div className="p-5 border-b border-slate-700 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-white">Hostel ERP</h1>
+            <h1 className="text-xl font-bold text-white">Indu Niwas</h1>
             <p className="text-xs text-slate-400 mt-0.5 capitalize">{role}</p>
           </div>
           <button
