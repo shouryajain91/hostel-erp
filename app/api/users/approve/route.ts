@@ -95,5 +95,83 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true })
   }
 
+  if (approvalRequest.request_type === 'add_tenant') {
+    const payload = approvalRequest.payload as Record<string, unknown>
+    const { data: room } = await supabase
+      .from('rooms')
+      .select('id, room_types(capacity)')
+      .eq('id', payload.room_id as string)
+      .single()
+
+    if (room) {
+      const { count } = await supabase
+        .from('tenants')
+        .select('*', { count: 'exact', head: true })
+        .eq('room_id', payload.room_id as string)
+        .eq('status', 'active')
+
+      const capacity = ((room.room_types as unknown) as { capacity: number })?.capacity ?? 1
+      if ((count ?? 0) >= capacity) {
+        return NextResponse.json({ error: `Room is at full capacity (${capacity}).` }, { status: 409 })
+      }
+    }
+
+    const { error: insertError } = await supabase.from('tenants').insert({
+      ...payload,
+      security_deposit: parseFloat(String(payload.security_deposit)),
+      created_by: approvalRequest.requested_by,
+      approved_by: user.id,
+    })
+    if (insertError) return NextResponse.json({ error: insertError.message }, { status: 500 })
+
+    // Mark room occupied
+    await supabase.from('rooms').update({ status: 'occupied' }).eq('id', payload.room_id as string)
+
+    await supabase.from('approval_requests')
+      .update({ status: 'approved', resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', requestId)
+
+    return NextResponse.json({ success: true })
+  }
+
+  if (approvalRequest.request_type === 'update_tenant') {
+    const { tenant_id, ...updates } = approvalRequest.payload as Record<string, unknown>
+    const { error: updateError } = await supabase.from('tenants')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', tenant_id as string)
+    if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 })
+
+    await supabase.from('approval_requests')
+      .update({ status: 'approved', resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', requestId)
+
+    return NextResponse.json({ success: true })
+  }
+
+  if (approvalRequest.request_type === 'checkout_tenant') {
+    const { tenant_id, room_id, tenancy_end_date } = approvalRequest.payload as Record<string, string>
+
+    await supabase.from('tenants')
+      .update({ status: 'checked_out', tenancy_end_date, updated_at: new Date().toISOString() })
+      .eq('id', tenant_id)
+
+    const { count } = await supabase
+      .from('tenants')
+      .select('*', { count: 'exact', head: true })
+      .eq('room_id', room_id)
+      .eq('status', 'active')
+      .neq('id', tenant_id)
+
+    if ((count ?? 0) === 0) {
+      await supabase.from('rooms').update({ status: 'available' }).eq('id', room_id)
+    }
+
+    await supabase.from('approval_requests')
+      .update({ status: 'approved', resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', requestId)
+
+    return NextResponse.json({ success: true })
+  }
+
   return NextResponse.json({ error: 'Unknown request type' }, { status: 400 })
 }

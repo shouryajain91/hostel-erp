@@ -129,12 +129,22 @@ export default function ApprovalsPage() {
                 </div>
 
                 <div className="text-sm text-slate-600 bg-slate-50 rounded-lg p-3 mb-4">
-                  {Object.entries(req.payload).map(([k, v]) => (
-                    <div key={k}>
-                      <span className="font-medium capitalize">{k}:</span>{' '}
-                      <span>{String(v)}</span>
-                    </div>
-                  ))}
+                  {Object.entries(req.payload).map(([k, v]) => {
+                    const isImageUrl = typeof v === 'string' && (v.startsWith('http') && (k.endsWith('_url') || k.endsWith('url')))
+                    return (
+                      <div key={k} className={isImageUrl ? 'my-2' : ''}>
+                        <span className="font-medium capitalize">{k.replace(/_/g, ' ')}:</span>{' '}
+                        {isImageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <a href={String(v)} target="_blank" rel="noopener noreferrer">
+                            <img src={String(v)} alt={k} className="h-20 rounded-lg border border-slate-200 mt-1 object-cover hover:opacity-80 transition-opacity" />
+                          </a>
+                        ) : (
+                          <span>{String(v)}</span>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
 
                 <div className="flex items-center gap-2">
