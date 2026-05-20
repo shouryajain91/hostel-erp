@@ -30,7 +30,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         <ArrowLeft size={16} /> Back to Rooms
       </Link>
 
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h2 className="text-2xl font-bold text-slate-900">Room {room.room_number}</h2>

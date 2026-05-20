@@ -34,7 +34,7 @@ export default async function TenantDetailPage({ params }: { params: { id: strin
         <ArrowLeft size={16} /> Back to Tenants
       </Link>
 
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h2 className="text-2xl font-bold text-slate-900">{tenant.name}</h2>
@@ -46,7 +46,7 @@ export default async function TenantDetailPage({ params }: { params: { id: strin
           </div>
           <p className="text-slate-500 text-sm">Room {room?.room_number} · {room?.room_types?.name} · Floor {room?.floor}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {tenant.status === 'active' && (
             <CheckoutButton tenantId={tenant.id} tenantName={tenant.name} isOwner={isOwner} />
           )}
@@ -60,7 +60,7 @@ export default async function TenantDetailPage({ params }: { params: { id: strin
         {/* Personal */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Personal Details</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Date of Birth" value={tenant.date_of_birth ? new Date(tenant.date_of_birth).toLocaleDateString('en-IN') : null} />
             <Field label="Gender" value={tenant.gender ? tenant.gender.charAt(0).toUpperCase() + tenant.gender.slice(1) : null} />
             <Field label="Mobile" value={tenant.mobile} />
@@ -73,7 +73,7 @@ export default async function TenantDetailPage({ params }: { params: { id: strin
         {/* Tenancy */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Tenancy Details</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Booking Date" value={tenant.booking_date ? new Date(tenant.booking_date).toLocaleDateString('en-IN') : null} />
             <Field label="Tenancy Start" value={tenant.tenancy_start_date ? new Date(tenant.tenancy_start_date).toLocaleDateString('en-IN') : null} />
             <Field label="Security Deposit" value={tenant.security_deposit != null ? `₹${Number(tenant.security_deposit).toLocaleString('en-IN')}` : null} />
@@ -87,7 +87,7 @@ export default async function TenantDetailPage({ params }: { params: { id: strin
         {/* KYC */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">KYC Documents</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { name: tenant.kyc_doc1_name, url: tenant.kyc_doc1_url, label: 'Document 1' },
               { name: tenant.kyc_doc2_name, url: tenant.kyc_doc2_url, label: 'Document 2' },

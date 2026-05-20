@@ -24,13 +24,13 @@ export default async function RoomsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">Rooms</h2>
           <p className="text-sm text-slate-500 mt-0.5">{rooms?.length ?? 0} rooms total</p>
         </div>
         {isOwner && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
             <BulkUploadButton />
             <Link
               href="/rooms/new"

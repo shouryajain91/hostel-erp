@@ -145,8 +145,8 @@ export default function TenantForm({
       {/* Personal Details */}
       <div>
         <h3 className="text-sm font-semibold text-slate-700 mb-4 pb-2 border-b border-slate-100">Personal Details</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2">
             <label className={labelCls}>Full Name</label>
             <input type="text" value={name} onChange={e => setName(e.target.value)} required className={inputCls} placeholder="e.g. Rahul Sharma" />
           </div>
@@ -175,7 +175,7 @@ export default function TenantForm({
             <label className={labelCls}>Guardian Mobile</label>
             <input type="tel" value={guardianMobile} onChange={e => setGuardianMobile(e.target.value)} required className={inputCls} />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className={labelCls}>Permanent Address</label>
             <textarea value={address} onChange={e => setAddress(e.target.value)} required rows={2} className={`${inputCls} resize-none`} placeholder="Full permanent address" />
           </div>
@@ -185,8 +185,8 @@ export default function TenantForm({
       {/* Room & Dates */}
       <div>
         <h3 className="text-sm font-semibold text-slate-700 mb-4 pb-2 border-b border-slate-100">Room & Tenancy</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2">
             <label className={labelCls}>Room</label>
             <select value={roomId} onChange={e => setRoomId(e.target.value)} required className={inputCls}>
               <option value="">Select a room…</option>
@@ -224,7 +224,7 @@ export default function TenantForm({
       {/* KYC Documents */}
       <div>
         <h3 className="text-sm font-semibold text-slate-700 mb-4 pb-2 border-b border-slate-100">KYC Documents</h3>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {([1, 2] as const).map(slot => {
             const docName = slot === 1 ? kyc1Name : kyc2Name
             const setDocName = slot === 1 ? setKyc1Name : setKyc2Name

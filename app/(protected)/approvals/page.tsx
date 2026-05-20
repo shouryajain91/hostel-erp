@@ -147,11 +147,11 @@ export default function ApprovalsPage() {
                   })}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <button
                     onClick={() => handleAction(req.id, 'approve')}
                     disabled={actionLoading === req.id}
-                    className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                    className="flex items-center justify-center gap-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
                   >
                     <CheckCircle size={15} />
                     {actionLoading === req.id ? 'Processing…' : 'Approve'}
@@ -162,13 +162,13 @@ export default function ApprovalsPage() {
                     placeholder="Rejection reason (optional)"
                     value={rejectNotes[req.id] || ''}
                     onChange={e => setRejectNotes(prev => ({ ...prev, [req.id]: e.target.value }))}
-                    className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="flex-1 min-w-0 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                   />
 
                   <button
                     onClick={() => handleAction(req.id, 'reject')}
                     disabled={actionLoading === req.id}
-                    className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                    className="flex items-center justify-center gap-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
                   >
                     <XCircle size={15} />
                     Reject

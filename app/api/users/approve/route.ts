@@ -173,5 +173,52 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true })
   }
 
+  if (approvalRequest.request_type === 'generate_bill') {
+    const payload = approvalRequest.payload as Record<string, unknown>
+    const { components, ...billData } = payload
+    const componentList = components as Record<string, unknown>[]
+    const total_amount = componentList.reduce((sum: number, c) => sum + parseFloat(String(c.amount)), 0)
+
+    const { data: bill, error: billErr } = await admin
+      .from('bills')
+      .insert({ ...billData, total_amount, created_by: approvalRequest.requested_by, approved_by: user.id, status: 'draft' })
+      .select()
+      .single()
+
+    if (billErr) return NextResponse.json({ error: billErr.message }, { status: 500 })
+
+    const componentRows = componentList.map(c => ({
+      bill_id: bill.id,
+      component_type: c.component_type,
+      description: c.description || null,
+      amount: parseFloat(String(c.amount)),
+      units_consumed: c.units_consumed ? parseFloat(String(c.units_consumed)) : null,
+      rate_per_unit: c.rate_per_unit ? parseFloat(String(c.rate_per_unit)) : null,
+      num_tenants: c.num_tenants ? parseInt(String(c.num_tenants)) : null,
+      days: c.days ? parseInt(String(c.days)) : null,
+    }))
+
+    const { error: compErr } = await admin.from('bill_components').insert(componentRows)
+    if (compErr) return NextResponse.json({ error: compErr.message }, { status: 500 })
+
+    await supabase.from('approval_requests')
+      .update({ status: 'approved', resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', requestId)
+
+    return NextResponse.json({ success: true, billId: bill.id })
+  }
+
+  if (approvalRequest.request_type === 'mark_bill_paid') {
+    const { bill_id } = approvalRequest.payload as { bill_id: string }
+
+    await admin.from('bills').update({ status: 'paid', updated_at: new Date().toISOString() }).eq('id', bill_id)
+
+    await supabase.from('approval_requests')
+      .update({ status: 'approved', resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', requestId)
+
+    return NextResponse.json({ success: true })
+  }
+
   return NextResponse.json({ error: 'Unknown request type' }, { status: 400 })
 }
