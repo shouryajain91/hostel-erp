@@ -43,7 +43,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // Owner-only routes
-  if (pathname.startsWith('/approvals')) {
+  const ownerOnlyPaths = [
+    '/approvals',
+    '/room-types/new',
+  ]
+  const isOwnerOnly = ownerOnlyPaths.some(p => pathname.startsWith(p))
+    || /^\/room-types\/[^/]+\/edit/.test(pathname)
+
+  if (isOwnerOnly) {
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
